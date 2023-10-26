@@ -2,7 +2,7 @@
 {
     public class Snapshot
     {
-        public List<TrackedFile> Files { get; set; }
+        public List<TrackedFile> TrackedFiles { get; set; }
         public DateTime DateTime { get; set; } = DateTime.Now;
     }
 }
