@@ -2,9 +2,12 @@
 {
     internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            var tracker = new FileTrackerService();
+
+            Console.WriteLine("Press enter to exit.");
+            Console.ReadLine();
         }
     }
 }
