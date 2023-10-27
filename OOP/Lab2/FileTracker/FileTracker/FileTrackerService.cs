@@ -1,4 +1,6 @@
-﻿namespace FileTracker
+﻿using FileTracker.Models;
+
+namespace FileTracker
 {
     public class FileTrackerService
     {
@@ -32,6 +34,24 @@
         }
 
         private static void OnRenamed(object sender, RenamedEventArgs e)
+        {
+        }
+
+        public Snapshot Commit()
+        {
+            Snapshot snapshot = new Snapshot();
+
+            return snapshot;
+        }
+
+        public TrackedFile GetInfoOnFiles()
+        {
+            TrackedFile trackedFile = new TrackedFile();
+
+            return trackedFile;
+        }
+
+        public void GetStatus()
         {
         }
     }

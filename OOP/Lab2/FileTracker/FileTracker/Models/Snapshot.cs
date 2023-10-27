@@ -3,6 +3,6 @@
     public class Snapshot
     {
         public List<TrackedFile> TrackedFiles { get; set; }
-        public DateTime DateTime { get; set; } = DateTime.Now;
+        public DateTime SnapshotTime { get; set; } = DateTime.Now;
     }
 }
