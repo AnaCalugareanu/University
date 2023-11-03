@@ -1,4 +1,5 @@
-﻿using FileTracker.Specifications;
+﻿using FileTracker.Models;
+using FileTracker.Specifications;
 
 namespace FileTracker
 {
@@ -6,7 +7,21 @@ namespace FileTracker
     {
         private static void Main(string[] args)
         {
+            string directory = @"C:\UniLaboratory";
+            var snapshot = new Snapshot();
+            string[] files = Directory.GetFiles(directory);
+            foreach (var element in files)
+            {
+                snapshot.TrackedFiles.Add(new TrackedFile
+                {
+                    Name = element.Split('\\')[2],
+                    FileStatus = FileStatus.Unchanged
+                });
+            }
+
             var tracker = new FileTrackerService();
+
+            FileTrackerService.Snapshot = snapshot;
 
             while (true)
             {
@@ -23,7 +38,8 @@ namespace FileTracker
                 switch (number)
                 {
                     case 1:
-                        tracker.Commit();
+                        Console.WriteLine(tracker.Commit());
+                        tracker.ResetSnapshot();
                         break;
 
                     case 2:
