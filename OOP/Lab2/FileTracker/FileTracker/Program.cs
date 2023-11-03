@@ -1,5 +1,4 @@
 ﻿using FileTracker.Models;
-using FileTracker.Specifications;
 
 namespace FileTracker
 {
@@ -43,9 +42,7 @@ namespace FileTracker
                         break;
 
                     case 2:
-                        //tracker.GetInfoOnFiles();
-                        var dsadas = new ProgramFileSpecification();
-                        dsadas.PrintFileInfo(@"C:\main.py");
+                        tracker.GetInfoOnFiles();
                         break;
 
                     case 3:

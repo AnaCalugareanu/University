@@ -5,7 +5,7 @@
         public List<TrackedFile> TrackedFiles { get; set; } = new List<TrackedFile>();
         public DateTime SnapshotTime { get; set; } = DateTime.Now;
 
-        private string ListToString(List<TrackedFile> files)
+        public string ListToString(List<TrackedFile> files)
         {
             string output = string.Empty;
 

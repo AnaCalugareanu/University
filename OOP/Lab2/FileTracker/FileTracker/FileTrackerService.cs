@@ -1,14 +1,17 @@
 ﻿using FileTracker.Models;
+using FileTracker.Specifications;
 
 namespace FileTracker
 {
     public class FileTrackerService
     {
         public static Snapshot Snapshot { get; set; }
+        private static DateTime lastRead = DateTime.MinValue;
+        private const string FolderPath = @"C:\UniLaboratory\";
 
         public FileTrackerService()
         {
-            var watcher = new FileSystemWatcher(@"C:\UniLaboratory");
+            var watcher = new FileSystemWatcher(FolderPath);
 
             watcher.NotifyFilter = NotifyFilters.DirectoryName
                                  | NotifyFilters.FileName
@@ -25,7 +28,14 @@ namespace FileTracker
 
         private static void OnChanged(object sender, FileSystemEventArgs e)
         {
-            Snapshot.TrackedFiles.FirstOrDefault(x => x.Name == e.Name).FileStatus = FileStatus.Changed;
+            //this logic was done because common file editors send 2 notifications instead of 1 on file modification.
+            DateTime lastWriteTime = File.GetLastWriteTime(e.FullPath);
+            if (lastWriteTime != lastRead)
+            {
+                Snapshot.TrackedFiles.FirstOrDefault(x => x.Name == e.Name).FileStatus = FileStatus.Changed;
+                Console.WriteLine(e.Name + "has been modified");
+                lastRead = lastWriteTime;
+            }
         }
 
         private static void OnCreated(object sender, FileSystemEventArgs e)
@@ -53,15 +63,24 @@ namespace FileTracker
             return Snapshot;
         }
 
-        public TrackedFile GetInfoOnFiles()
+        public void GetInfoOnFiles()
         {
-            TrackedFile trackedFile = new TrackedFile();
+            Console.Write("Introduce the file name: ");
+            var fileName = Console.ReadLine();
 
-            return trackedFile;
+            var filePath = FolderPath + fileName;
+
+            var specification = GetSpecification(filePath.Split('.')[1]);
+
+            specification.PrintFileInfo(filePath);
+
+            return;
         }
 
         public void GetStatus()
         {
+            Console.WriteLine("Status of files after the latest snapshot:");
+            Console.WriteLine(Snapshot.ListToString(Snapshot.TrackedFiles));
         }
 
         public void ResetSnapshot()
@@ -76,6 +95,23 @@ namespace FileTracker
 
                 file.FileStatus = FileStatus.Unchanged;
             }
+        }
+
+        private ISpecification GetSpecification(string fileExtension)
+        {
+            if (fileExtension == "py" ||
+               fileExtension == "c")
+                return new ProgramFileSpecification();
+
+            if (fileExtension == "txt")
+                return new TextFileSpecification();
+
+            if (fileExtension == "jpg" ||
+               fileExtension == "png" ||
+               fileExtension == "jpeg")
+                return new ImageFileSpecification();
+
+            return new GenericFileSpecification();
         }
     }
 }
