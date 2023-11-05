@@ -18,6 +18,8 @@ namespace FileTracker
                 });
             }
 
+            FileTrackerService.RunInBackground(TimeSpan.FromSeconds(5));
+
             var tracker = new FileTrackerService();
 
             FileTrackerService.Snapshot = snapshot;

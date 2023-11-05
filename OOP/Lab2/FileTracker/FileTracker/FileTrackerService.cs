@@ -7,11 +7,12 @@ namespace FileTracker
     {
         public static Snapshot Snapshot { get; set; }
         private static DateTime lastRead = DateTime.MinValue;
-        private const string FolderPath = @"C:\UniLaboratory\";
+        private const string FOLDER_PATH = @"C:\UniLaboratory\";
+        private static List<string> updatesToPrint = new List<string>();
 
         public FileTrackerService()
         {
-            var watcher = new FileSystemWatcher(FolderPath);
+            var watcher = new FileSystemWatcher(FOLDER_PATH);
 
             watcher.NotifyFilter = NotifyFilters.DirectoryName
                                  | NotifyFilters.FileName
@@ -33,7 +34,7 @@ namespace FileTracker
             if (lastWriteTime != lastRead)
             {
                 Snapshot.TrackedFiles.FirstOrDefault(x => x.Name == e.Name).FileStatus = FileStatus.Changed;
-                Console.WriteLine(e.Name + "has been modified");
+                updatesToPrint.Add($"{e.Name} has been updated");
                 lastRead = lastWriteTime;
             }
         }
@@ -45,16 +46,19 @@ namespace FileTracker
                 Name = e.Name,
                 FileStatus = FileStatus.Added
             });
+            updatesToPrint.Add($"{e.Name} has been added");
         }
 
         private static void OnDeleted(object sender, FileSystemEventArgs e)
         {
             Snapshot.TrackedFiles.FirstOrDefault(x => x.Name == e.Name).FileStatus = FileStatus.Deleted;
+            updatesToPrint.Add($"{e.Name} has been deleted");
         }
 
         private static void OnRenamed(object sender, RenamedEventArgs e)
         {
             Snapshot.TrackedFiles.FirstOrDefault(x => x.Name == e.Name).FileStatus = FileStatus.Renamed;
+            updatesToPrint.Add($"{e.Name} has been renamed");
         }
 
         public Snapshot Commit()
@@ -68,7 +72,7 @@ namespace FileTracker
             Console.Write("Introduce the file name: ");
             var fileName = Console.ReadLine();
 
-            var filePath = FolderPath + fileName;
+            var filePath = FOLDER_PATH + fileName;
 
             var specification = GetSpecification(filePath.Split('.')[1]);
 
@@ -112,6 +116,19 @@ namespace FileTracker
                 return new ImageFileSpecification();
 
             return new GenericFileSpecification();
+        }
+
+        public static async Task RunInBackground(TimeSpan timeSpan)
+        {
+            var periodicTimer = new PeriodicTimer(timeSpan);
+            while (await periodicTimer.WaitForNextTickAsync())
+            {
+                foreach (var update in updatesToPrint)
+                    Console.WriteLine(update);
+
+                updatesToPrint = new List<string>();
+            }
+            
         }
     }
 }
