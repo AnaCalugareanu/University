@@ -22,5 +22,15 @@ namespace StackAndQueueImplementation
         {
             throw new NotImplementedException();
         }
+
+        public void Push(int item)
+        {
+            throw new NotImplementedException();
+        }
+
+        int IStackInterface.Peek()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

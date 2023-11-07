@@ -4,23 +4,42 @@ namespace StackAndQueueImplementation
 {
     public class ArrayStackImplementation : IStackInterface
     {
-        public bool IsEmpty => throw new NotImplementedException();
+        public bool IsEmpty => stack.Count == 0;
 
-        public int CountItems => throw new NotImplementedException();
+        public int CountItems => stack.Count;
 
-        public void Peek()
+        private List<int> stack;
+
+        public ArrayStackImplementation()
         {
-            throw new NotImplementedException();
+            stack = new List<int>();
+        }
+
+        public int Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The stack is empty.");
+            }
+
+            return stack[stack.Count - 1]; // Return the top element
         }
 
         public int Pop()
         {
-            throw new NotImplementedException();
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The stack is empty.");
+            }
+
+            int topElement = stack[stack.Count - 1]; // Get the top element
+            stack.RemoveAt(stack.Count - 1); // Remove the top element from the list
+            return topElement;
         }
 
-        public bool Push()
+        public void Push(int item)
         {
-            throw new NotImplementedException();
+            stack.Add(item);
         }
     }
 }

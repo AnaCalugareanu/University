@@ -2,7 +2,7 @@
 
 namespace StackAndQueueImplementation
 {
-    public class ArrayQueueImplementation : IQueueInterface
+    public class QueueImplementation : IQueueInterface
     {
         public bool IsEmpty => throw new NotImplementedException();
 
@@ -13,12 +13,12 @@ namespace StackAndQueueImplementation
             throw new NotImplementedException();
         }
 
-        public void Enqueue()
+        public void Enqueue(int item)
         {
             throw new NotImplementedException();
         }
 
-        public bool Peek()
+        int IQueueInterface.Peek()
         {
             throw new NotImplementedException();
         }

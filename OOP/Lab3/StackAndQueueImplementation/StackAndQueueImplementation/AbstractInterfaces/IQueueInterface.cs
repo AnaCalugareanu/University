@@ -5,10 +5,10 @@
         public bool IsEmpty { get; }
         public int CountItems { get; }
 
-        bool Peek();
+        int Peek();
 
         int Dequeue();
 
-        void Enqueue();
+        void Enqueue(int item);
     }
 }

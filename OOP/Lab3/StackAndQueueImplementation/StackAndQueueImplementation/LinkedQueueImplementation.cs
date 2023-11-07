@@ -18,7 +18,17 @@ namespace StackAndQueueImplementation
             throw new NotImplementedException();
         }
 
+        public void Enqueue(int item)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Peek()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IQueueInterface.Peek()
         {
             throw new NotImplementedException();
         }
