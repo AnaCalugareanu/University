@@ -2,7 +2,7 @@
 
 namespace StackAndQueueImplementation
 {
-    public class StackImplementation : IStackInterface
+    public class ArrayStackImplementation : IStackInterface
     {
         public bool IsEmpty => throw new NotImplementedException();
 
