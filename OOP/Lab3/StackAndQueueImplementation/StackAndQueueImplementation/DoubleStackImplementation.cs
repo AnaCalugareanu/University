@@ -4,33 +4,59 @@ namespace StackAndQueueImplementation
 {
     public class DoubleStackImplementation : IStackInterface
     {
-        public bool IsEmpty => throw new NotImplementedException();
+        private List<int> stack;
 
-        public int CountItems => throw new NotImplementedException();
-
-        public void Peek()
+        public DoubleStackImplementation()
         {
-            throw new NotImplementedException();
+            stack = new List<int>();
+        }
+
+        public bool IsEmpty => stack.Count == 0;
+
+        public int CountItems => stack.Count;
+
+        public int Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The double stack is empty.");
+            }
+
+            return stack[stack.Count - 1];
         }
 
         public int Pop()
         {
-            throw new NotImplementedException();
-        }
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The double stack is empty.");
+            }
 
-        public bool Push()
-        {
-            throw new NotImplementedException();
+            int topElement = stack[stack.Count - 1];
+            stack.RemoveAt(stack.Count - 1);
+            return topElement;
         }
 
         public void Push(int item)
         {
-            throw new NotImplementedException();
+            stack.Add(item);
         }
 
-        int IStackInterface.Peek()
+        public int PopFromBottom()
         {
-            throw new NotImplementedException();
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The double stack is empty.");
+            }
+
+            int bottomElement = stack[0];
+            stack.RemoveAt(0);
+            return bottomElement;
+        }
+
+        public void PushToBottom(int item)
+        {
+            stack.Insert(0, item);
         }
     }
 }
