@@ -4,33 +4,88 @@ namespace StackAndQueueImplementation
 {
     public class LinkedQueueImplementation : IQueueInterface
     {
-        public bool IsEmpty => throw new NotImplementedException();
+        private class Node
+        {
+            public int Value { get; }
+            public Node Next { get; set; }
 
-        public int CountItems => throw new NotImplementedException();
+            public Node(int value)
+            {
+                Value = value;
+                Next = null;
+            }
+        }
+
+        private Node front;
+        private Node rear;
+
+        public LinkedQueueImplementation()
+        {
+            front = null;
+            rear = null;
+        }
+
+        public bool IsEmpty => front == null;
+
+        public int CountItems
+        {
+            get
+            {
+                int count = 0;
+                Node current = front;
+
+                while (current != null)
+                {
+                    count++;
+                    current = current.Next;
+                }
+
+                return count;
+            }
+        }
+
+        public int Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The linked queue is empty.");
+            }
+
+            return front.Value;
+        }
 
         public int Dequeue()
         {
-            throw new NotImplementedException();
-        }
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The linked queue is empty.");
+            }
 
-        public void Enqueue()
-        {
-            throw new NotImplementedException();
+            int frontValue = front.Value;
+            front = front.Next;
+
+            if (front == null)
+            {
+                rear = null;
+            }
+
+            return frontValue;
         }
 
         public void Enqueue(int item)
         {
-            throw new NotImplementedException();
-        }
+            Node newNode = new Node(item);
 
-        public bool Peek()
-        {
-            throw new NotImplementedException();
-        }
-
-        int IQueueInterface.Peek()
-        {
-            throw new NotImplementedException();
+            if (rear == null)
+            {
+                front = newNode;
+                rear = newNode;
+            }
+            else
+            {
+                rear.Next = newNode;
+                rear = newNode;
+            }
         }
     }
 }
