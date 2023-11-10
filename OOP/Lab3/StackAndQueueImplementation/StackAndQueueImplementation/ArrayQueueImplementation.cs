@@ -2,25 +2,44 @@
 
 namespace StackAndQueueImplementation
 {
-    public class QueueImplementation : IQueueInterface
+    public class ArrayQueueImplementation : IQueueInterface
     {
-        public bool IsEmpty => throw new NotImplementedException();
+        public bool IsEmpty => queue.Count == 0;
 
-        public int CountItems => throw new NotImplementedException();
+        public int CountItems => queue.Count;
+
+        private List<int> queue;
+
+        public ArrayQueueImplementation()
+        {
+            queue = new List<int>();
+        }
 
         public int Dequeue()
         {
-            throw new NotImplementedException();
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The queue is empty.");
+            }
+
+            int frontElement = queue[0];
+            queue.RemoveAt(0);
+            return frontElement;
         }
 
         public void Enqueue(int item)
         {
-            throw new NotImplementedException();
+            queue.Add(item);
         }
 
-        int IQueueInterface.Peek()
+        public int Peek()
         {
-            throw new NotImplementedException();
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The queue is empty.");
+            }
+
+            return queue[0];
         }
     }
 }
