@@ -4,33 +4,72 @@ namespace StackAndQueueImplementation
 {
     public class LinkedStackImplementation : IStackInterface
     {
-        public bool IsEmpty => throw new NotImplementedException();
-
-        public int CountItems => throw new NotImplementedException();
-
-        public void Peek()
+        private class Node
         {
-            throw new NotImplementedException();
+            public int Value { get; }
+            public Node Next { get; set; }
+
+            public Node(int value)
+            {
+                Value = value;
+                Next = null;
+            }
+        }
+
+        private Node top;
+
+        public LinkedStackImplementation()
+        {
+            top = null;
+        }
+
+        public bool IsEmpty => top == null;
+
+        public int CountItems
+        {
+            get
+            {
+                int count = 0;
+                Node current = top;
+
+                while (current != null)
+                {
+                    count++;
+                    current = current.Next;
+                }
+
+                return count;
+            }
+        }
+
+        public int Peek()
+        {
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The linked stack is empty.");
+            }
+
+            return top.Value;
         }
 
         public int Pop()
         {
-            throw new NotImplementedException();
-        }
+            if (IsEmpty)
+            {
+                throw new InvalidOperationException("The linked stack is empty.");
+            }
 
-        public bool Push()
-        {
-            throw new NotImplementedException();
+            int topValue = top.Value;
+            top = top.Next;
+
+            return topValue;
         }
 
         public void Push(int item)
         {
-            throw new NotImplementedException();
-        }
-
-        int IStackInterface.Peek()
-        {
-            throw new NotImplementedException();
+            Node newNode = new Node(item);
+            newNode.Next = top;
+            top = newNode;
         }
     }
 }
